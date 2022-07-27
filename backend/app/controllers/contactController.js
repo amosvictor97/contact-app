@@ -63,14 +63,24 @@ const updateContact = async (req, res) => {
     }
 }
 
+
+
+const deleteContact = async (req,res) => {
+    try {
+
+        const id = req.params.id
+        const result = await destroy(id)
+        return res.status(204).json("resource deleted succesfully")
+
+    } catch(err) {
+        return res.status(500).send(err)
+    }
+}
+
+
 const bulkDelete = async (req, res) => {
 
 }
-
-const deleteContact = (req,res) => {
-
-}
-
 
 
 module.exports = {
