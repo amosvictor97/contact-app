@@ -1,6 +1,6 @@
 const express = require('express')
 
-const contactRouter = require('../routes/contacts')
+const contactRouter = require('./routes/contacts')
 
 const app = express()
 
