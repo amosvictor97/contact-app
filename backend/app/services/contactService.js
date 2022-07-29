@@ -1,7 +1,9 @@
 const Contact = require('../models/Contact')
 
 const findAll = () => {
-    return Contact.find();
+    return Contact
+        .find()
+        .sort({ 'createdAt': -1 });
 }
 
 const findContact = (id) => {

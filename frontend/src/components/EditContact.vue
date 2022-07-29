@@ -3,7 +3,7 @@
     <div class="card mt-3">
         <div class="card-body">
             <div class="submit-form">
-                <form @submit.prevent="saveContact" v-if="!submitted">
+                <div>
                     <div class="form-group">
                         <label class="form-label" for="nom">Nom</label>
                         <input type="text" class="form-control" id="nom" required v-model="contact.nom" />
@@ -21,12 +21,8 @@
                         <input type="email" class="form-control" id="email" required v-model="contact.email" />
                     </div>
 
-                    <button  type="submit" class="btn btn-success mt-3">Enregister</button>
-                </form>
-                <div v-else>
-                    <h4>You submitted successfully!</h4>
-<!--                     <button class="btn btn-success" @click="newTutorial">Add</button>
- -->                </div>
+                    <button @click="update" class="btn btn-warning mt-3">Modifier</button>
+                </div>
             </div>
         </div>
     </div>
@@ -34,9 +30,8 @@
 </template>
 
 <script>
-    //import TutorialDataService from "../services/TutorialDataService";
     export default {
-        name: "add-contact",
+        name: "edit-contact",
         data() {
             return {
                 contact: {
@@ -44,23 +39,31 @@
                     prenoms: "",
                     telephone: "",
                     email: ""
-                },
-                submitted: false
+                }
             };
         },
+        mounted() {
+          this.getContactData();
+        },
         methods: {
-            saveContact() {
 
-                this.axios.post('/api/contacts', this.contact)
+            getContactData(){
+                this.axios.get(`/api/contacts/${this.$route.params.id}`)
                     .then(response => {
-                        console.log(response.data)
-                        this.submitted = true;
-                        this.$router.push('/contacts')
-
+                        this.contact = response.data
                     })
                     .catch(e => console.log(e))
-
             },
+            update() {
+                const id = this.$route.params.id
+                this.axios.put(`/api/contacts/${id}`, this.contact)
+                    .then(response => {
+                        console.log(response)
+                        this.$router.push('/')
+                    })
+                    .catch(e => console.log(e))
+            },
+
         }
     };
 </script>
