@@ -98,7 +98,7 @@
                             .then(response => {
                                 console.log(response)
                                 this.$swal(
-                                    'SUpprimé!',
+                                    'Supprimé!',
                                     'Le contact a été supprimé',
                                     'success'
                                 )
