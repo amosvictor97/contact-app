@@ -1,5 +1,5 @@
 <template>
-    <!-- <h5 class="text-center">Ajouter un nouveau contact</h5> -->
+    <h5>Ajouter un nouveau contact</h5>
     <div class="card mt-3">
         <div class="card-body">
             <div class="submit-form">
@@ -14,7 +14,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label mt-2" for="telephone">Teléphone</label>
-                        <input type="tel" class="form-control" id="telephone" required v-model="contact.telephone" />
+                        <input type="number" class="form-control" id="telephone" required v-model="contact.telephone" />
                     </div>
                     <div class="form-group">
                         <label class="form-label mt-2" for="email">Email</label>

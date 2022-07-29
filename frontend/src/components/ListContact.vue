@@ -1,6 +1,8 @@
 <template>
-
-    <div class="card bg-light">
+    <h5>
+        Liste des contacts
+    </h5>
+    <div class="card bg-light mt-3">
         <div class="card-body">
             <table class="table table-hover">
                 <thead>
@@ -18,7 +20,7 @@
                 <tbody>
                     <tr v-for="(contact, index) in contacts" :key="index">
                         <th scope="row">
-                            <input type="checkbox" :value="contact._id" v-model="selected">
+                            <input type="checkbox" :value="contact._id" v-model="checkedContacts">
                         </th>
                         <td>{{ contact.nom }}</td>
                         <td>{{ contact.prenoms }}</td>
@@ -32,7 +34,7 @@
                     </tr>
                 </tbody>
             </table>
-            <button v-if="selected.length > 1" class="btn btn-danger">Suppression multiple</button>
+            <button v-if="checkedContacts.length > 1" @click="deleteAll" class="btn btn-danger">Suppression multiple</button>
         </div>
     </div>
 
@@ -44,7 +46,7 @@
         data() {
             return {
                 contacts: [],
-                selected: [],
+                checkedContacts: [],
                 selectAll: false
             };
         },
@@ -69,13 +71,13 @@
 
             },
             checkAll(){
-                this.selected = [];
+                this.checkedContacts = [];
                 if (!this.selectAll) {
-                    this.selected = this.contacts.map(contact => contact._id)
+                    this.checkedContacts = this.contacts.map(contact => contact._id)
                     this.selectAll = true
                 }
                 else{
-                    this.selected = []
+                    this.checkedContacts = []
                     this.selectAll = false
                 }
             },
@@ -92,13 +94,41 @@
                 }).then((result) => {
 
                     if (result.isConfirmed) {
-
                         this.axios.delete(`api/contacts/${contact_id}`)
                             .then(response => {
                                 console.log(response)
                                 this.$swal(
                                     'SUpprimé!',
                                     'Le contact a été supprimé',
+                                    'success'
+                                )
+                                this.refreshList()
+                            })
+                            .catch(e => {
+                                console.log(e)
+                            });
+                    }
+                });
+            },
+            deleteAll() {
+                this.$swal({
+                    title: 'Etes vous sûr?',
+                    text: "Vous allez supprimer tous les contacts sélectionnés",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Oui, supprimer tout!',
+                    cancelButtonText: 'Annuler'
+                }).then((result) => {
+
+                    if (result.isConfirmed) {
+                        this.axios.post(`api/contacts/delete-all`,{idList : this.checkedContacts})
+                            .then(response => {
+                                console.log(response)
+                                this.$swal(
+                                    'Supprimé!',
+                                    'Les contacts ont été supprimé',
                                     'success'
                                 )
                                 this.refreshList()

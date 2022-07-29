@@ -1,4 +1,4 @@
-const { findAll,findContact,save,destroy,update } = require('../services/contactService')
+const { findAll,findContact,save,destroy,update,deleteMany } = require('../services/contactService')
 
 
 const getAllContact = async (req, res) => {
@@ -77,9 +77,20 @@ const deleteContact = async (req,res) => {
     }
 }
 
-
+/*
+* Delete a list of contact
+*/
 const bulkDelete = async (req, res) => {
+    try {
+        idList = req.body.idList
+        const result = await deleteMany(idList)
+        console.log(result)
+        return res.json(`${result.deletedCount} resources deleted succesfully`)
 
+    }
+    catch(err){
+        return res.status(500).send(err)
+    }
 }
 
 

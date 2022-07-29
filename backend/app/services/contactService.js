@@ -13,7 +13,7 @@ const findContact = (id) => {
 
 const save = (contactData) => {
     let newContact = new Contact(contactData);
-    return newContact.save()
+    return  newContact.save()
 }
 
 
@@ -25,10 +25,15 @@ const destroy = (id) => {
     return Contact.findOneAndDelete({_id : id})
 }
 
+const deleteMany =  (idList) => {
+    return Contact.deleteMany({_id: { $in: idList}})
+}
+
 module.exports = {
     findAll,
     findContact,
     save,
     update,
-    destroy
+    destroy,
+    deleteMany
 }
